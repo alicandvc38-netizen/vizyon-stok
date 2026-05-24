@@ -1,0 +1,8 @@
+<h1>Stok Durumu</h1>
+
+{% for u in urunler %}
+<p>
+{{ u['urun_adi'] }} :
+{{ u['stok'] }}
+</p>
+{% endfor %}
