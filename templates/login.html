@@ -1,7 +1,100 @@
-<h1>Giriş Sayfası</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vizyon Stok | Giriş</title>
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#050505,#1a1a1a);
+    font-family:Arial, sans-serif;
+    color:white;
+}
+
+.login-box{
+    width:380px;
+    background:#151515;
+    border:2px solid gold;
+    border-radius:22px;
+    padding:40px;
+    box-shadow:0 0 35px rgba(255,215,0,0.25);
+}
+
+.logo{
+    text-align:center;
+    color:gold;
+    font-size:34px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.sub{
+    text-align:center;
+    color:#bbb;
+    margin-bottom:30px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-bottom:18px;
+    border:none;
+    border-radius:12px;
+    background:#2b2b2b;
+    color:white;
+    font-size:16px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:gold;
+    color:black;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ffcc00;
+}
+
+.hata{
+    margin-top:18px;
+    color:#ff4b4b;
+    text-align:center;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<div class="logo">VİZYON STOK</div>
+<div class="sub">Profesyonel Stok Takip Sistemi</div>
 
 <form method="POST">
-  <input type="text" name="kullanici" placeholder="Kullanıcı Adı">
-  <input type="password" name="sifre" placeholder="Şifre">
-  <button type="submit">Giriş Yap</button>
+    <input type="text" name="kullanici" placeholder="Kullanıcı Adı" required>
+    <input type="password" name="sifre" placeholder="Şifre" required>
+    <button type="submit">Giriş Yap</button>
 </form>
+
+{% if hata %}
+<div class="hata">{{ hata }}</div>
+{% endif %}
+
+</div>
+
+</body>
+</html>
