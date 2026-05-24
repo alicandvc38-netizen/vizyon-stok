@@ -7,39 +7,50 @@
 
 <style>
 
-body{
+*{
     margin:0;
-    font-family:Arial;
-    background:#111;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#0f0f0f;
     color:white;
 }
 
 .header{
+    width:100%;
     background:black;
-    padding:20px;
-    text-align:center;
+    padding:25px;
     border-bottom:3px solid gold;
+    text-align:center;
 }
 
 .header h1{
     color:gold;
-    margin:0;
+    font-size:36px;
+}
+
+.header p{
+    margin-top:10px;
+    color:#bbb;
 }
 
 .container{
-    max-width:1000px;
+    max-width:1200px;
     margin:auto;
     padding:40px 20px;
 }
 
-.menu{
+.cards{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:25px;
 }
 
-.kart{
-    background:#1e1e1e;
+.card{
+    background:#1b1b1b;
     border:2px solid gold;
     border-radius:20px;
     padding:40px;
@@ -47,73 +58,123 @@ body{
     transition:0.3s;
 }
 
-.kart:hover{
-    transform:scale(1.03);
-    background:#2b2b2b;
+.card:hover{
+    transform:translateY(-5px);
+    background:#242424;
 }
 
-.kart a{
+.card a{
     color:white;
     text-decoration:none;
     font-size:24px;
     font-weight:bold;
 }
 
-.alt{
+.footer{
+    margin-top:50px;
     text-align:center;
-    margin-top:40px;
 }
 
-.cikis{
+.logout{
+    display:inline-block;
+    padding:15px 30px;
     background:gold;
     color:black;
-    padding:15px 30px;
-    border-radius:10px;
     text-decoration:none;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.stats{
+    margin-top:50px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.stat-box{
+    background:#1b1b1b;
+    border-left:5px solid gold;
+    padding:25px;
+    border-radius:15px;
+}
+
+.stat-box h2{
+    color:gold;
+    margin-bottom:10px;
+}
+
+.stat-box p{
+    font-size:28px;
     font-weight:bold;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
-    <h1>VİZYON STOK TAKİP SİSTEMİ</h1>
+    <h1>VİZYON STOK</h1>
+    <p>Profesyonel Stok ve Depo Yönetim Sistemi</p>
 </div>
 
 <div class="container">
 
-<div class="menu">
+<div class="cards">
 
-<div class="kart">
+<div class="card">
 <a href="/urunler">Ürünler</a>
 </div>
 
-<div class="kart">
+<div class="card">
 <a href="/satis">Satış</a>
 </div>
 
-<div class="kart">
+<div class="card">
 <a href="/stok">Stok</a>
 </div>
 
-<div class="kart">
+<div class="card">
 <a href="/raporlar">Raporlar</a>
 </div>
 
-<div class="kart">
+<div class="card">
 <a href="/uretim">Üretim</a>
 </div>
 
-<div class="kart">
+<div class="card">
 <a href="/sevkiyat">Sevkiyat</a>
 </div>
 
+<div class="card">
+<a href="/cari">Cari Hesap</a>
 </div>
 
-<div class="alt">
-<a class="cikis" href="/logout">Çıkış Yap</a>
+</div>
+
+<div class="stats">
+
+<div class="stat-box">
+<h2>Toplam Ürün</h2>
+<p>{{ toplam_urun }}</p>
+</div>
+
+<div class="stat-box">
+<h2>Toplam Stok</h2>
+<p>{{ toplam_stok }}</p>
+</div>
+
+<div class="stat-box">
+<h2>Kritik Ürün</h2>
+<p>{{ kritik }}</p>
+</div>
+
+</div>
+
+<div class="footer">
+<a class="logout" href="/logout">Çıkış Yap</a>
 </div>
 
 </div>
