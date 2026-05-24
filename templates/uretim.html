@@ -1,7 +1,34 @@
-<h1>Üretim Paneli</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Üretim</title>
 
-<a href="/">Ana Sayfa</a>
+<style>
+body{margin:0;background:#111;color:white;font-family:Arial;padding:30px}
+a{color:gold;text-decoration:none;font-weight:bold}
+h1{text-align:center;color:gold}
+.container{max-width:1000px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:30px}
+.kart{background:#1e1e1e;border:2px solid gold;border-radius:18px;padding:25px;text-align:center}
+.kart h2{color:gold}
+</style>
+</head>
 
-<hr>
+<body>
+<div class="container">
 
-<p>Bugünkü üretim bilgileri burada görünecek.</p>
+<a href="/">← Ana Sayfa</a>
+
+<h1>ÜRETİM PANELİ</h1>
+
+<div class="cards">
+<div class="kart"><h2>Kesim</h2><p>Planlanan işler</p></div>
+<div class="kart"><h2>Döşeme</h2><p>Devam eden üretim</p></div>
+<div class="kart"><h2>Kalite Kontrol</h2><p>Kontrol bekleyenler</p></div>
+<div class="kart"><h2>Hazır Ürün</h2><p>Sevkiyata hazır</p></div>
+</div>
+
+</div>
+</body>
+</html>
