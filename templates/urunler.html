@@ -1,0 +1,18 @@
+<h1>Ürünler</h1>
+
+<form method="POST" enctype="multipart/form-data">
+  <input type="text" name="urun_adi" placeholder="Ürün Adı">
+  <input type="number" name="stok" placeholder="Stok">
+  <input type="number" name="kritik_stok" placeholder="Kritik Stok">
+  <input type="file" name="foto">
+  <button type="submit">Ürün Ekle</button>
+</form>
+
+<hr>
+
+{% for u in urunler %}
+<p>
+{{ u['urun_adi'] }} -
+Stok: {{ u['stok'] }}
+</p>
+{% endfor %}
