@@ -2,95 +2,153 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Stok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stok Durumu</title>
 
 <style>
 
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
     background:#111;
-    font-family:Arial;
     color:white;
+    font-family:Arial, sans-serif;
 }
 
-.container{
-    width:500px;
-    margin:50px auto;
-}
-
-h1{
-    color:gold;
+.header{
+    background:black;
+    padding:20px;
+    border-bottom:3px solid gold;
     text-align:center;
 }
 
-form{
-    border:2px solid gold;
-    padding:25px;
-    border-radius:20px;
-    background:#1b1b1b;
+.header h1{
+    color:gold;
 }
 
-input{
-    width:100%;
-    padding:15px;
-    margin-top:15px;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
 }
 
-button{
-    width:100%;
-    padding:15px;
-    margin-top:20px;
-    border:none;
-    border-radius:10px;
-    background:gold;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
+.top{
+    margin-bottom:25px;
 }
 
-button:hover{
-    background:#ffd700;
-}
-
-a{
+.top a{
     color:gold;
     text-decoration:none;
     font-weight:bold;
 }
 
-.geri{
-    margin-bottom:20px;
+.liste{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:20px;
+    padding:20px;
+}
+
+.kart h2{
+    color:gold;
+    margin-bottom:15px;
+}
+
+.kart p{
+    margin-bottom:10px;
+}
+
+.kritik{
+    border:2px solid red;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:10px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.normal{
+    background:#00a651;
+}
+
+.danger{
+    background:#d62828;
+}
+
+img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-top:15px;
 }
 
 </style>
 
 </head>
+
 <body>
+
+<div class="header">
+<h1>STOK DURUMU</h1>
+</div>
 
 <div class="container">
 
-<div class="geri">
+<div class="top">
 <a href="/">← Ana Sayfa</a>
 </div>
 
-<h1>STOK PANELİ</h1>
+<div class="liste">
 
-<form>
+{% for u in urunler %}
 
-<input type="text" placeholder="Ürün Adı">
+<div class="kart {% if u['stok'] <= u['kritik_stok'] %}kritik{% endif %}">
 
-<input type="number" placeholder="Stok Adedi">
+<h2>{{ u['urun_adi'] }}</h2>
 
-<input type="number" placeholder="Minimum Stok">
+<p><b>Stok:</b> {{ u['stok'] }}</p>
 
-<button>
-Stok Kaydet
-</button>
+<p><b>Kritik Seviye:</b> {{ u['kritik_stok'] }}</p>
 
-</form>
+{% if u['stok'] <= u['kritik_stok'] %}
+
+<span class="badge danger">
+Kritik Stok
+</span>
+
+{% else %}
+
+<span class="badge normal">
+Stok Normal
+</span>
+
+{% endif %}
+
+{% if u['foto'] %}
+
+<img src="/static/uploads/{{ u['foto'] }}">
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
 
 </div>
 
