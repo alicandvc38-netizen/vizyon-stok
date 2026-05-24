@@ -1,0 +1,28 @@
+<h1>Satış</h1>
+
+<form method="POST" action="/satis_ekle">
+
+<select name="urun_id">
+{% for u in urunler %}
+<option value="{{ u['id'] }}">
+{{ u['urun_adi'] }}
+</option>
+{% endfor %}
+</select>
+
+<input type="number" name="adet" placeholder="Adet">
+<input type="number" step="0.01" name="fiyat" placeholder="Fiyat">
+<input type="text" name="musteri" placeholder="Müşteri">
+
+<button type="submit">Satış Yap</button>
+</form>
+
+<hr>
+
+{% for s in satislar %}
+<p>
+{{ s['musteri'] }} -
+{{ s['urun_adi'] }} -
+{{ s['adet'] }}
+</p>
+{% endfor %}
