@@ -2,67 +2,128 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ürünler</title>
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
     background:#111;
     color:white;
-    font-family:Arial;
-    margin:0;
-    padding:30px;
+    font-family:Arial, sans-serif;
 }
 
-h1{
-    color:gold;
+.header{
+    background:black;
+    padding:20px;
+    border-bottom:3px solid gold;
     text-align:center;
 }
 
-.form{
+.header h1{
+    color:gold;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.top{
+    margin-bottom:25px;
+}
+
+.top a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.form-box{
     background:#1e1e1e;
     border:2px solid gold;
-    padding:20px;
-    border-radius:15px;
-    max-width:500px;
-    margin:auto;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:40px;
+}
+
+.form-box h2{
+    color:gold;
+    margin-bottom:20px;
 }
 
 input{
     width:100%;
-    padding:12px;
-    margin-top:10px;
+    padding:15px;
     margin-bottom:15px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+    background:#2b2b2b;
+    color:white;
+    font-size:16px;
 }
 
 button{
     width:100%;
     padding:15px;
     background:gold;
+    color:black;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+    font-size:18px;
     font-weight:bold;
     cursor:pointer;
 }
 
+button:hover{
+    background:#ffcc00;
+}
+
 .liste{
-    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
 
 .kart{
     background:#1e1e1e;
     border:2px solid gold;
+    border-radius:20px;
     padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
+}
+
+.kart h3{
+    color:gold;
+    margin-bottom:15px;
+}
+
+.kart p{
+    margin-bottom:10px;
+}
+
+.kritik{
+    color:#ff4b4b;
+    font-weight:bold;
+}
+
+.normal{
+    color:#00d26a;
+    font-weight:bold;
 }
 
 img{
-    width:150px;
-    border-radius:10px;
-    margin-top:10px;
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-top:15px;
 }
 
 </style>
@@ -70,17 +131,27 @@ img{
 
 <body>
 
-<h1>ÜRÜNLER</h1>
+<div class="header">
+<h1>ÜRÜN YÖNETİMİ</h1>
+</div>
 
-<div class="form">
+<div class="container">
+
+<div class="top">
+<a href="/">← Ana Sayfa</a>
+</div>
+
+<div class="form-box">
+
+<h2>Yeni Ürün Ekle</h2>
 
 <form method="POST" enctype="multipart/form-data">
 
-<input type="text" name="urun_adi" placeholder="Ürün Adı">
+<input type="text" name="urun_adi" placeholder="Ürün Adı" required>
 
-<input type="number" name="stok" placeholder="Stok">
+<input type="number" name="stok" placeholder="Stok Adedi" required>
 
-<input type="number" name="kritik_stok" placeholder="Kritik Stok">
+<input type="number" name="kritik_stok" placeholder="Kritik Stok Seviyesi" required>
 
 <input type="file" name="foto">
 
@@ -96,11 +167,17 @@ img{
 
 <div class="kart">
 
-<h2>{{ urun['urun_adi'] }}</h2>
+<h3>{{ urun['urun_adi'] }}</h3>
 
-<p>Stok: {{ urun['stok'] }}</p>
+<p><b>Stok:</b> {{ urun['stok'] }}</p>
 
-<p>Kritik Stok: {{ urun['kritik_stok'] }}</p>
+<p><b>Kritik Seviye:</b> {{ urun['kritik_stok'] }}</p>
+
+{% if urun['stok'] <= urun['kritik_stok'] %}
+<p class="kritik">Kritik Stok</p>
+{% else %}
+<p class="normal">Stok Normal</p>
+{% endif %}
 
 {% if urun['foto'] %}
 <img src="/static/uploads/{{ urun['foto'] }}">
@@ -109,6 +186,8 @@ img{
 </div>
 
 {% endfor %}
+
+</div>
 
 </div>
 
