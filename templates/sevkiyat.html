@@ -1,7 +1,102 @@
-<h1>Sevkiyat Paneli</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Sevkiyat</title>
 
-<a href="/">Ana Sayfa</a>
+<style>
 
-<hr>
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial;
+    padding:30px;
+}
 
-<p>Sevkiyat bilgileri burada görünecek.</p>
+a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+h1{
+    text-align:center;
+    color:gold;
+    margin-bottom:40px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:20px;
+    padding:30px;
+}
+
+.kart h2{
+    color:gold;
+}
+
+.kart p{
+    margin-top:15px;
+    color:#ddd;
+}
+
+.durum{
+    margin-top:20px;
+    display:inline-block;
+    background:green;
+    padding:8px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="/">← Ana Sayfa</a>
+
+<h1>SEVKİYAT PANELİ</h1>
+
+<div class="cards">
+
+<div class="kart">
+<h2>Kayseri Sevkiyatı</h2>
+<p>Bugünkü teslimatlar hazırlanıyor.</p>
+<span class="durum">Hazır</span>
+</div>
+
+<div class="kart">
+<h2>Ankara Sevkiyatı</h2>
+<p>Yükleme aşamasında.</p>
+<span class="durum">Devam Ediyor</span>
+</div>
+
+<div class="kart">
+<h2>İstanbul Sevkiyatı</h2>
+<p>Sevkiyat tamamlandı.</p>
+<span class="durum">Tamamlandı</span>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
