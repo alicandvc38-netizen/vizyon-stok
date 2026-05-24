@@ -1,8 +1,117 @@
-<h1>Stok Durumu</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Stok Durumu</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    color:gold;
+}
+
+a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:15px;
+    padding:20px;
+    margin-top:20px;
+}
+
+.kritik{
+    border:2px solid red;
+}
+
+img{
+    width:150px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.badge{
+    display:inline-block;
+    margin-top:10px;
+    padding:8px 14px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.normal{
+    background:green;
+}
+
+.danger{
+    background:red;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="/">← Ana Sayfa</a>
+
+<h1>STOK DURUMU</h1>
 
 {% for u in urunler %}
-<p>
-{{ u['urun_adi'] }} :
-{{ u['stok'] }}
-</p>
+
+<div class="kart {% if u['stok'] <= u['kritik_stok'] %}kritik{% endif %}">
+
+<h2>{{ u['urun_adi'] }}</h2>
+
+<p><b>Stok:</b> {{ u['stok'] }}</p>
+
+<p><b>Kritik Seviye:</b> {{ u['kritik_stok'] }}</p>
+
+{% if u['stok'] <= u['kritik_stok'] %}
+
+<span class="badge danger">
+Kritik Stok
+</span>
+
+{% else %}
+
+<span class="badge normal">
+Stok Normal
+</span>
+
+{% endif %}
+
+{% if u['foto'] %}
+
+<br>
+
+<img src="/static/uploads/{{ u['foto'] }}">
+
+{% endif %}
+
+</div>
+
 {% endfor %}
+
+</div>
+
+</body>
+</html>
