@@ -2,50 +2,179 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Satış</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satış Paneli</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#111;color:white;padding:30px}
-h1{text-align:center;color:gold}
-a{color:gold;text-decoration:none;font-weight:bold}
-.form,.liste{max-width:850px;margin:25px auto;background:#1e1e1e;border:2px solid gold;border-radius:15px;padding:25px}
-input,select,button{width:100%;padding:13px;margin:10px 0;border-radius:10px;border:none}
-button{background:gold;color:black;font-weight:bold;cursor:pointer}
-.kart{background:#292929;border:1px solid gold;border-radius:12px;padding:15px;margin:12px 0}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
+}
+
+.header{
+    background:black;
+    padding:20px;
+    border-bottom:3px solid gold;
+    text-align:center;
+}
+
+.header h1{
+    color:gold;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.top{
+    margin-bottom:25px;
+}
+
+.top a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.form-box{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:40px;
+}
+
+.form-box h2{
+    color:gold;
+    margin-bottom:20px;
+}
+
+select,input{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:12px;
+    background:#2b2b2b;
+    color:white;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:gold;
+    color:black;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ffcc00;
+}
+
+.liste{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:20px;
+    padding:20px;
+}
+
+.kart h3{
+    color:gold;
+    margin-bottom:15px;
+}
+
+.kart p{
+    margin-bottom:10px;
+}
+
 </style>
+
 </head>
+
 <body>
 
-<a href="/">← Ana Sayfa</a>
+<div class="header">
 <h1>SATIŞ PANELİ</h1>
+</div>
 
-<div class="form">
+<div class="container">
+
+<div class="top">
+<a href="/">← Ana Sayfa</a>
+</div>
+
+<div class="form-box">
+
+<h2>Yeni Satış</h2>
+
 <form method="POST" action="/satis_ekle">
+
 <select name="urun_id" required>
+
 <option value="">Ürün Seç</option>
+
 {% for u in urunler %}
-<option value="{{ u['id'] }}">{{ u['urun_adi'] }} - Stok: {{ u['stok'] }}</option>
+
+<option value="{{ u['id'] }}">
+{{ u['urun_adi'] }} | Stok: {{ u['stok'] }}
+</option>
+
 {% endfor %}
+
 </select>
 
-<input type="number" name="adet" placeholder="Adet" required>
+<input type="number" name="adet" placeholder="Satış Adedi" required>
+
 <input type="number" step="0.01" name="fiyat" placeholder="Toplam Tutar" required>
+
 <input type="text" name="musteri" placeholder="Müşteri Adı" required>
 
 <button type="submit">Satış Yap</button>
+
 </form>
+
 </div>
 
 <div class="liste">
-<h2>Satış Geçmişi</h2>
 
 {% for s in satislar %}
+
 <div class="kart">
+
+<h3>{{ s['urun_adi'] }}</h3>
+
 <p><b>Müşteri:</b> {{ s['musteri'] }}</p>
-<p><b>Ürün:</b> {{ s['urun_adi'] }}</p>
+
 <p><b>Adet:</b> {{ s['adet'] }}</p>
+
 <p><b>Tutar:</b> {{ s['tutar'] }} TL</p>
+
 </div>
+
 {% endfor %}
+
+</div>
 
 </div>
 
