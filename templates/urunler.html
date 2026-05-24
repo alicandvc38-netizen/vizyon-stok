@@ -1,18 +1,116 @@
-<h1>Ürünler</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Ürünler</title>
+
+<style>
+
+body{
+    background:#111;
+    color:white;
+    font-family:Arial;
+    margin:0;
+    padding:30px;
+}
+
+h1{
+    color:gold;
+    text-align:center;
+}
+
+.form{
+    background:#1e1e1e;
+    border:2px solid gold;
+    padding:20px;
+    border-radius:15px;
+    max-width:500px;
+    margin:auto;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:10px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.liste{
+    margin-top:40px;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+img{
+    width:150px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>ÜRÜNLER</h1>
+
+<div class="form">
 
 <form method="POST" enctype="multipart/form-data">
-  <input type="text" name="urun_adi" placeholder="Ürün Adı">
-  <input type="number" name="stok" placeholder="Stok">
-  <input type="number" name="kritik_stok" placeholder="Kritik Stok">
-  <input type="file" name="foto">
-  <button type="submit">Ürün Ekle</button>
+
+<input type="text" name="urun_adi" placeholder="Ürün Adı">
+
+<input type="number" name="stok" placeholder="Stok">
+
+<input type="number" name="kritik_stok" placeholder="Kritik Stok">
+
+<input type="file" name="foto">
+
+<button type="submit">Ürün Ekle</button>
+
 </form>
 
-<hr>
+</div>
 
-{% for u in urunler %}
-<p>
-{{ u['urun_adi'] }} -
-Stok: {{ u['stok'] }}
-</p>
+<div class="liste">
+
+{% for urun in urunler %}
+
+<div class="kart">
+
+<h2>{{ urun['urun_adi'] }}</h2>
+
+<p>Stok: {{ urun['stok'] }}</p>
+
+<p>Kritik Stok: {{ urun['kritik_stok'] }}</p>
+
+{% if urun['foto'] %}
+<img src="/static/uploads/{{ urun['foto'] }}">
+{% endif %}
+
+</div>
+
 {% endfor %}
+
+</div>
+
+</body>
+</html>
