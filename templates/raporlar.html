@@ -1,8 +1,121 @@
-<h1>Raporlar</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Raporlar</title>
 
-<p>Toplam Ürün: {{ toplam_urun }}</p>
-<p>Toplam Stok: {{ toplam_stok }}</p>
-<p>Kritik Ürün: {{ kritik }}</p>
+<style>
 
-<a href="/excel_indir">Excel İndir</a><br>
-<a href="/pdf_rapor">PDF İndir</a>
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial;
+    padding:30px;
+}
+
+a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+h1{
+    text-align:center;
+    color:gold;
+    margin-bottom:40px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.kart{
+    background:#1e1e1e;
+    border:2px solid gold;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+}
+
+.kart h2{
+    color:gold;
+    margin-bottom:20px;
+}
+
+.kart p{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.btnlar{
+    margin-top:50px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.btn{
+    background:gold;
+    color:black;
+    padding:15px 30px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="/">← Ana Sayfa</a>
+
+<h1>RAPORLAR</h1>
+
+<div class="cards">
+
+<div class="kart">
+<h2>Toplam Ürün</h2>
+<p>{{ toplam_urun }}</p>
+</div>
+
+<div class="kart">
+<h2>Toplam Stok</h2>
+<p>{{ toplam_stok }}</p>
+</div>
+
+<div class="kart">
+<h2>Kritik Ürün</h2>
+<p>{{ kritik }}</p>
+</div>
+
+</div>
+
+<div class="btnlar">
+
+<a class="btn" href="/excel_indir">
+Excel İndir
+</a>
+
+<a class="btn" href="/pdf_rapor">
+PDF İndir
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
