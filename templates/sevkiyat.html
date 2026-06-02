@@ -1,100 +1,89 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Sevkiyat</title>
-
-<style>
-
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:Arial;
-    padding:30px;
-}
-
-a{
-    color:gold;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-h1{
-    text-align:center;
-    color:gold;
-    margin-bottom:40px;
-}
-
-.container{
-    max-width:1000px;
-    margin:auto;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
-}
-
-.kart{
-    background:#1e1e1e;
-    border:2px solid gold;
-    border-radius:20px;
-    padding:30px;
-}
-
-.kart h2{
-    color:gold;
-}
-
-.kart p{
-    margin-top:15px;
-    color:#ddd;
-}
-
-.durum{
-    margin-top:20px;
-    display:inline-block;
-    background:green;
-    padding:8px 15px;
-    border-radius:10px;
-    font-weight:bold;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>Sevkiyat Paneli</title>
+    <style>
+        body { margin:0; font-family:Arial; background:#111; color:white; }
+        .container { width:90%; margin:30px auto; }
+        h1 { text-align:center; color:#ffc400; }
+        a { color:#ffc400; text-decoration:none; font-weight:bold; }
+        .card { background:#1c1c1c; border:2px solid #ffc400; border-radius:15px; padding:20px; margin-bottom:25px; }
+        input, select { width:100%; padding:12px; margin:8px 0; border-radius:8px; border:none; box-sizing:border-box; }
+        button { background:#ffc400; color:#111; padding:12px 20px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; }
+        .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; }
+        table { width:100%; border-collapse:collapse; background:#1c1c1c; margin-top:15px; }
+        th, td { padding:12px; border-bottom:1px solid #444; text-align:center; }
+        th { background:#ffc400; color:#111; }
+        @media(max-width:900px){ .grid{grid-template-columns:1fr;} }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<a href="/">← Ana Sayfa</a>
+    <h1>SEVKİYAT PANELİ</h1>
+    <a href="/">⬅ Ana Sayfa</a>
 
-<h1>SEVKİYAT PANELİ</h1>
+    <div class="card">
+        <h2>Yeni Sevkiyat</h2>
 
-<div class="cards">
+        <form method="POST">
+            <div class="grid">
+                <input type="text" name="musteri" placeholder="Müşteri Adı" required>
+                <input type="text" name="telefon" placeholder="Telefon">
+                <input type="text" name="arac" placeholder="Araç">
+                <input type="text" name="sofor" placeholder="Şoför">
+            </div>
 
-<div class="kart">
-<h2>Kayseri Sevkiyatı</h2>
-<p>Bugünkü teslimatlar hazırlanıyor.</p>
-<span class="durum">Hazır</span>
-</div>
+            <input type="text" name="adres" placeholder="Adres">
 
-<div class="kart">
-<h2>Ankara Sevkiyatı</h2>
-<p>Yükleme aşamasında.</p>
-<span class="durum">Devam Ediyor</span>
-</div>
+            <div class="grid">
+                <select name="durum">
+                    <option>Hazırlanıyor</option>
+                    <option>Yolda</option>
+                    <option>Teslim Edildi</option>
+                </select>
 
-<div class="kart">
-<h2>İstanbul Sevkiyatı</h2>
-<p>Sevkiyat tamamlandı.</p>
-<span class="durum">Tamamlandı</span>
-</div>
+                <input type="date" name="tarih" required>
+            </div>
 
-</div>
+            <button type="submit">Sevkiyat Kaydet</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Sevkiyat Listesi</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Müşteri</th>
+                    <th>Telefon</th>
+                    <th>Araç</th>
+                    <th>Şoför</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sevkiyatlar %}
+                <tr>
+                    <td>{{ s.tarih }}</td>
+                    <td>{{ s.musteri }}</td>
+                    <td>{{ s.telefon }}</td>
+                    <td>{{ s.arac }}</td>
+                    <td>{{ s.sofor }}</td>
+                    <td>{{ s.durum }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">Henüz sevkiyat kaydı yok</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
