@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, Response
+from functools import wraps
 import sqlite3
 from datetime import datetime
+import csv
+import io
 
 app = Flask(__name__)
+app.secret_key = "vizyonstokgizlisifre"
 DB = "vizyon_stok.db"
 
 
@@ -16,8 +20,7 @@ def init_db():
     conn = db()
     c = conn.cursor()
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS urunler (
+    c.execute("""CREATE TABLE IF NOT EXISTS urunler (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         kod TEXT,
         ad TEXT,
@@ -26,22 +29,18 @@ def init_db():
         fiyat REAL DEFAULT 0,
         stok INTEGER DEFAULT 0,
         kritik INTEGER DEFAULT 5
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS stok_hareketleri (
+    c.execute("""CREATE TABLE IF NOT EXISTS stok_hareketleri (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         urun_id INTEGER,
         tip TEXT,
         adet INTEGER,
         aciklama TEXT,
         tarih TEXT
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS satislar (
+    c.execute("""CREATE TABLE IF NOT EXISTS satislar (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         musteri TEXT,
         urun_id INTEGER,
@@ -49,21 +48,17 @@ def init_db():
         fiyat REAL,
         toplam REAL,
         tarih TEXT
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS uretim (
+    c.execute("""CREATE TABLE IF NOT EXISTS uretim (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         model TEXT,
         adet INTEGER,
         durum TEXT,
         tarih TEXT
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS sevkiyat (
+    c.execute("""CREATE TABLE IF NOT EXISTS sevkiyat (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         musteri TEXT,
         telefon TEXT,
@@ -72,29 +67,24 @@ def init_db():
         sofor TEXT,
         durum TEXT,
         tarih TEXT
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS cariler (
+    c.execute("""CREATE TABLE IF NOT EXISTS cariler (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ad TEXT,
         telefon TEXT,
         sehir TEXT,
         yetkili TEXT
-    )
-    """)
+    )""")
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS cari_hareketleri (
+    c.execute("""CREATE TABLE IF NOT EXISTS cari_hareketleri (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cari_id INTEGER,
         tip TEXT,
         aciklama TEXT,
         tutar REAL,
         tarih TEXT
-    )
-    """)
+    )""")
 
     conn.commit()
     conn.close()
@@ -103,7 +93,40 @@ def init_db():
 init_db()
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user" not in session:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    hata = None
+
+    if request.method == "POST":
+        kullanici = request.form.get("kullanici")
+        sifre = request.form.get("sifre")
+
+        if kullanici == "admin" and sifre == "1234":
+            session["user"] = kullanici
+            return redirect("/")
+        else:
+            hata = "Kullanıcı adı veya şifre hatalı"
+
+    return render_template("login.html", hata=hata)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+
+
 @app.route("/")
+@login_required
 def index():
     conn = db()
 
@@ -144,6 +167,7 @@ def index():
 
 
 @app.route("/urunler", methods=["GET", "POST"])
+@login_required
 def urunler():
     conn = db()
 
@@ -160,6 +184,7 @@ def urunler():
             request.form.get("stok", 0),
             request.form.get("kritik", 5)
         ))
+
         conn.commit()
         conn.close()
         return redirect("/urunler")
@@ -169,7 +194,18 @@ def urunler():
     return render_template("urunler.html", urunler=urunler)
 
 
+@app.route("/urun-sil/<int:id>")
+@login_required
+def urun_sil(id):
+    conn = db()
+    conn.execute("DELETE FROM urunler WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect("/urunler")
+
+
 @app.route("/stok", methods=["GET", "POST"])
+@login_required
 def stok():
     conn = db()
 
@@ -195,6 +231,7 @@ def stok():
         return redirect("/stok")
 
     urunler = conn.execute("SELECT * FROM urunler ORDER BY ad").fetchall()
+
     hareketler = conn.execute("""
         SELECT stok_hareketleri.*, urunler.ad AS urun_ad
         FROM stok_hareketleri
@@ -207,6 +244,7 @@ def stok():
 
 
 @app.route("/satis", methods=["GET", "POST"])
+@login_required
 def satis():
     conn = db()
 
@@ -230,6 +268,7 @@ def satis():
         return redirect("/satis")
 
     urunler = conn.execute("SELECT * FROM urunler ORDER BY ad").fetchall()
+
     satislar = conn.execute("""
         SELECT satislar.*, urunler.ad AS urun_ad
         FROM satislar
@@ -242,6 +281,7 @@ def satis():
 
 
 @app.route("/uretim", methods=["GET", "POST"])
+@login_required
 def uretim():
     conn = db()
 
@@ -255,6 +295,7 @@ def uretim():
             request.form.get("durum"),
             request.form.get("tarih")
         ))
+
         conn.commit()
         conn.close()
         return redirect("/uretim")
@@ -265,6 +306,7 @@ def uretim():
 
 
 @app.route("/sevkiyat", methods=["GET", "POST"])
+@login_required
 def sevkiyat():
     conn = db()
 
@@ -281,6 +323,7 @@ def sevkiyat():
             request.form.get("durum"),
             request.form.get("tarih")
         ))
+
         conn.commit()
         conn.close()
         return redirect("/sevkiyat")
@@ -291,6 +334,7 @@ def sevkiyat():
 
 
 @app.route("/cari", methods=["GET", "POST"])
+@login_required
 def cari():
     conn = db()
 
@@ -356,6 +400,7 @@ def cari():
 
 
 @app.route("/raporlar")
+@login_required
 def raporlar():
     conn = db()
 
@@ -384,13 +429,74 @@ def raporlar():
     )
 
 
-@app.route("/urun-sil/<int:id>")
-def urun_sil(id):
+@app.route("/excel/urunler")
+@login_required
+def excel_urunler():
     conn = db()
-    conn.execute("DELETE FROM urunler WHERE id=?", (id,))
-    conn.commit()
+    urunler = conn.execute("SELECT * FROM urunler").fetchall()
     conn.close()
-    return redirect("/urunler")
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Kod", "Ürün Adı", "Kategori", "Renk", "Fiyat", "Stok", "Kritik"])
+
+    for u in urunler:
+        writer.writerow([u["kod"], u["ad"], u["kategori"], u["renk"], u["fiyat"], u["stok"], u["kritik"]])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=urunler.csv"}
+    )
+
+
+@app.route("/excel/satislar")
+@login_required
+def excel_satislar():
+    conn = db()
+
+    satislar = conn.execute("""
+        SELECT satislar.*, urunler.ad AS urun_ad
+        FROM satislar
+        LEFT JOIN urunler ON urunler.id = satislar.urun_id
+        ORDER BY satislar.id DESC
+    """).fetchall()
+
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Tarih", "Müşteri", "Ürün", "Adet", "Birim Fiyat", "Toplam"])
+
+    for s in satislar:
+        writer.writerow([s["tarih"], s["musteri"], s["urun_ad"], s["adet"], s["fiyat"], s["toplam"]])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=satislar.csv"}
+    )
+
+
+@app.route("/excel/cariler")
+@login_required
+def excel_cariler():
+    conn = db()
+    cariler = conn.execute("SELECT * FROM cariler").fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Cari Adı", "Telefon", "Şehir", "Yetkili"])
+
+    for c in cariler:
+        writer.writerow([c["ad"], c["telefon"], c["sehir"], c["yetkili"]])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=cariler.csv"}
+    )
 
 
 if __name__ == "__main__":
