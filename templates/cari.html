@@ -1,7 +1,201 @@
-<h1>Cari Hesap Paneli</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cari Hesap - Vizyon Stok</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
 
-<a href="/">Ana Sayfa</a>
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
 
-<hr>
+        h1 {
+            text-align: center;
+            color: #ffc400;
+        }
 
-<p>Cari hesap bilgileri burada görünecek.</p>
+        .card {
+            background: #1c1c1c;
+            border: 2px solid #ffc400;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
+        }
+
+        button, .btn {
+            background: #ffc400;
+            color: #111;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        button:hover, .btn:hover {
+            background: #e0aa00;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .summary-box {
+            background: #292929;
+            border-left: 6px solid #ffc400;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .summary-box h3 {
+            color: #ffc400;
+            margin: 0;
+        }
+
+        .summary-box p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1c1c1c;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+
+        th {
+            background: #ffc400;
+            color: #111;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        @media(max-width: 900px) {
+            .grid, .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>CARİ HESAP</h1>
+
+    <div class="card">
+        <h2>Cari Bilgileri</h2>
+        <form>
+            <div class="grid">
+                <input type="text" placeholder="Cari Adı">
+                <input type="text" placeholder="Telefon">
+                <input type="text" placeholder="Şehir">
+                <input type="text" placeholder="Yetkili Kişi">
+            </div>
+            <button type="button">Cari Ekle</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Hareket Ekle</h2>
+        <form>
+            <div class="grid">
+                <input type="date">
+                <select>
+                    <option>Borç</option>
+                    <option>Alacak</option>
+                </select>
+                <input type="text" placeholder="Açıklama">
+                <input type="number" placeholder="Tutar ₺">
+            </div>
+            <button type="button">Kaydet</button>
+        </form>
+    </div>
+
+    <div class="summary">
+        <div class="summary-box">
+            <h3>Toplam Borç</h3>
+            <p>0 ₺</p>
+        </div>
+
+        <div class="summary-box">
+            <h3>Toplam Alacak</h3>
+            <p>0 ₺</p>
+        </div>
+
+        <div class="summary-box">
+            <h3>Bakiye</h3>
+            <p>0 ₺</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Cari Hareketler</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Cari Adı</th>
+                    <th>Açıklama</th>
+                    <th>Borç</th>
+                    <th>Alacak</th>
+                    <th>Bakiye</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7">Henüz cari hareket yok</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button">Excel Aktar</button>
+        <button type="button">PDF Yazdır</button>
+    </div>
+
+    <div class="back">
+        <a href="/" class="btn">Ana Sayfaya Dön</a>
+    </div>
+
+</div>
+
+</body>
+</html>
