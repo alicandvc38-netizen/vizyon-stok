@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Üretim</title>
-
-<style>
-
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:Arial;
-}
-
-.header{
-    background:black;
-    padding:20px;
-    border-bottom:3px solid gold;
-    text-align:center;
-}
-
-.header h1{
-    color:gold;
-}
-
-.container{
-    max-width:1000px;
-    margin:auto;
-    padding:30px;
-}
-
-a{
-    color:gold;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.panel{
-    margin-top:30px;
-    background:#1e1e1e;
-    border:2px solid gold;
-    border-radius:20px;
-    padding:30px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>Üretim Paneli</title>
+    <style>
+        body { margin:0; font-family:Arial; background:#111; color:white; }
+        .container { width:90%; margin:30px auto; }
+        h1 { text-align:center; color:#ffc400; }
+        a { color:#ffc400; text-decoration:none; font-weight:bold; }
+        .card { background:#1c1c1c; border:2px solid #ffc400; border-radius:15px; padding:20px; margin-bottom:25px; }
+        input, select { width:100%; padding:12px; margin:8px 0; border-radius:8px; border:none; box-sizing:border-box; }
+        button { background:#ffc400; color:#111; padding:12px 20px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; }
+        .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; }
+        table { width:100%; border-collapse:collapse; background:#1c1c1c; margin-top:15px; }
+        th, td { padding:12px; border-bottom:1px solid #444; text-align:center; }
+        th { background:#ffc400; color:#111; }
+        @media(max-width:900px){ .grid{grid-template-columns:1fr;} }
+    </style>
 </head>
-
 <body>
-
-<div class="header">
-<h1>ÜRETİM PANELİ</h1>
-</div>
 
 <div class="container">
 
-<a href="/">← Ana Sayfa</a>
+    <h1>ÜRETİM PANELİ</h1>
+    <a href="/">⬅ Ana Sayfa</a>
 
-<div class="panel">
+    <div class="card">
+        <h2>Yeni Üretim Kaydı</h2>
 
-<h2>Günlük Üretim Takibi</h2>
+        <form method="POST">
+            <div class="grid">
+                <input type="text" name="model" placeholder="Model Adı" required>
 
-<p>Üretim bilgileri burada görüntülenecek.</p>
+                <input type="number" name="adet" placeholder="Üretim Adedi" required>
 
-</div>
+                <select name="durum">
+                    <option>Bekliyor</option>
+                    <option>Üretimde</option>
+                    <option>Tamamlandı</option>
+                </select>
+
+                <input type="date" name="tarih" required>
+            </div>
+
+            <button type="submit">Üretim Kaydet</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Üretim Takibi</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Model</th>
+                    <th>Adet</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in uretimler %}
+                <tr>
+                    <td>{{ u.tarih }}</td>
+                    <td>{{ u.model }}</td>
+                    <td>{{ u.adet }}</td>
+                    <td>{{ u.durum }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">Henüz üretim kaydı yok</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
