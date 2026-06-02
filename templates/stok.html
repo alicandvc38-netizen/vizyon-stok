@@ -1,154 +1,126 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stok Durumu</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#111;
-    color:white;
-    font-family:Arial, sans-serif;
-}
-
-.header{
-    background:black;
-    padding:20px;
-    border-bottom:3px solid gold;
-    text-align:center;
-}
-
-.header h1{
-    color:gold;
-}
-
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:30px;
-}
-
-.top{
-    margin-bottom:25px;
-}
-
-.top a{
-    color:gold;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.liste{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-}
-
-.kart{
-    background:#1e1e1e;
-    border:2px solid gold;
-    border-radius:20px;
-    padding:20px;
-}
-
-.kart h2{
-    color:gold;
-    margin-bottom:15px;
-}
-
-.kart p{
-    margin-bottom:10px;
-}
-
-.kritik{
-    border:2px solid red;
-}
-
-.badge{
-    display:inline-block;
-    padding:8px 14px;
-    border-radius:10px;
-    margin-top:10px;
-    font-weight:bold;
-}
-
-.normal{
-    background:#00a651;
-}
-
-.danger{
-    background:#d62828;
-}
-
-img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    border-radius:12px;
-    margin-top:15px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>Stok Durumu</title>
+    <style>
+        body { margin:0; font-family:Arial; background:#111; color:white; }
+        .container { width:90%; margin:30px auto; }
+        h1 { text-align:center; color:#ffc400; }
+        a { color:#ffc400; text-decoration:none; font-weight:bold; }
+        .card { background:#1c1c1c; border:2px solid #ffc400; border-radius:15px; padding:20px; margin-bottom:25px; }
+        input, select { width:100%; padding:12px; margin:8px 0; border-radius:8px; border:none; box-sizing:border-box; }
+        button { background:#ffc400; color:#111; padding:12px 20px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; }
+        .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; }
+        table { width:100%; border-collapse:collapse; background:#1c1c1c; margin-top:15px; }
+        th, td { padding:12px; border-bottom:1px solid #444; text-align:center; }
+        th { background:#ffc400; color:#111; }
+        .kritik { color:#ff4d4d; font-weight:bold; }
+        @media(max-width:900px){ .grid{grid-template-columns:1fr;} }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-<h1>STOK DURUMU</h1>
-</div>
-
 <div class="container">
+    <h1>STOK DURUMU</h1>
+    <a href="/">⬅ Ana Sayfa</a>
 
-<div class="top">
-<a href="/">← Ana Sayfa</a>
-</div>
+    <div class="card">
+        <h2>Stok Giriş / Çıkış</h2>
 
-<div class="liste">
+        <form method="POST">
+            <div class="grid">
+                <select name="urun_id" required>
+                    <option value="">Ürün Seç</option>
+                    {% for urun in urunler %}
+                    <option value="{{ urun.id }}">{{ urun.ad }} - Mevcut: {{ urun.stok }}</option>
+                    {% endfor %}
+                </select>
 
-{% for u in urunler %}
+                <select name="tip" required>
+                    <option>Giriş</option>
+                    <option>Çıkış</option>
+                </select>
 
-<div class="kart {% if u['stok'] <= u['kritik_stok'] %}kritik{% endif %}">
+                <input type="number" name="adet" placeholder="Adet" required>
+                <input type="text" name="aciklama" placeholder="Açıklama">
+            </div>
 
-<h2>{{ u['urun_adi'] }}</h2>
+            <button type="submit">Kaydet</button>
+        </form>
+    </div>
 
-<p><b>Stok:</b> {{ u['stok'] }}</p>
+    <div class="card">
+        <h2>Ürün Stokları</h2>
 
-<p><b>Kritik Seviye:</b> {{ u['kritik_stok'] }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kod</th>
+                    <th>Ürün Adı</th>
+                    <th>Kategori</th>
+                    <th>Renk</th>
+                    <th>Stok</th>
+                    <th>Kritik</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for urun in urunler %}
+                <tr>
+                    <td>{{ urun.kod }}</td>
+                    <td>{{ urun.ad }}</td>
+                    <td>{{ urun.kategori }}</td>
+                    <td>{{ urun.renk }}</td>
+                    <td>{{ urun.stok }}</td>
+                    <td>{{ urun.kritik }}</td>
+                    <td>
+                        {% if urun.stok <= urun.kritik %}
+                            <span class="kritik">Kritik</span>
+                        {% else %}
+                            Normal
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">Henüz ürün eklenmedi</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-{% if u['stok'] <= u['kritik_stok'] %}
+    <div class="card">
+        <h2>Son Stok Hareketleri</h2>
 
-<span class="badge danger">
-Kritik Stok
-</span>
-
-{% else %}
-
-<span class="badge normal">
-Stok Normal
-</span>
-
-{% endif %}
-
-{% if u['foto'] %}
-
-<img src="/static/uploads/{{ u['foto'] }}">
-
-{% endif %}
-
-</div>
-
-{% endfor %}
-
-</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Ürün</th>
+                    <th>İşlem</th>
+                    <th>Adet</th>
+                    <th>Açıklama</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in hareketler %}
+                <tr>
+                    <td>{{ h.tarih }}</td>
+                    <td>{{ h.urun_ad }}</td>
+                    <td>{{ h.tip }}</td>
+                    <td>{{ h.adet }}</td>
+                    <td>{{ h.aciklama }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">Henüz stok hareketi yok</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
