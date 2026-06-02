@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vizyon Stok | Giriş</title>
+    <meta charset="UTF-8">
+    <title>Giriş - Vizyon Stok</title>
 
-<style>
-body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#050505,#1a1a1a);
-    font-family:Arial, sans-serif;
-    color:white;
-}
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: white;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.login-box{
-    width:380px;
-    background:#151515;
-    border:2px solid gold;
-    border-radius:22px;
-    padding:40px;
-    box-shadow:0 0 35px rgba(255,215,0,0.25);
-}
+        .login-box {
+            background: #1c1c1c;
+            border: 2px solid #ffc400;
+            border-radius: 18px;
+            padding: 35px;
+            width: 360px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255, 196, 0, 0.25);
+        }
 
-.logo{
-    text-align:center;
-    color:gold;
-    font-size:34px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
+        h1 {
+            color: #ffc400;
+            margin-bottom: 5px;
+        }
 
-.sub{
-    text-align:center;
-    color:#bbb;
-    margin-bottom:30px;
-}
+        p {
+            color: #ccc;
+        }
 
-input{
-    width:100%;
-    padding:15px;
-    margin-bottom:18px;
-    border:none;
-    border-radius:12px;
-    background:#2b2b2b;
-    color:white;
-    font-size:16px;
-    box-sizing:border-box;
-}
+        input {
+            width: 100%;
+            padding: 13px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
 
-button{
-    width:100%;
-    padding:15px;
-    background:gold;
-    color:black;
-    border:none;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-}
+        button {
+            width: 100%;
+            background: #ffc400;
+            color: #111;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+        }
 
-button:hover{
-    background:#ffcc00;
-}
+        button:hover {
+            background: #e0aa00;
+        }
 
-.hata{
-    margin-top:18px;
-    color:#ff4b4b;
-    text-align:center;
-    font-weight:bold;
-}
-</style>
+        .hata {
+            color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid #ff4d4d;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="login-box">
+    <h1>Vizyon Stok</h1>
+    <p>Yönetici Girişi</p>
 
-<div class="logo">VİZYON STOK</div>
-<div class="sub">Profesyonel Stok Takip Sistemi</div>
+    {% if hata %}
+    <div class="hata">{{ hata }}</div>
+    {% endif %}
 
-<form method="POST">
-    <input type="text" name="kullanici" placeholder="Kullanıcı Adı" required>
-    <input type="password" name="sifre" placeholder="Şifre" required>
-    <button type="submit">Giriş Yap</button>
-</form>
+    <form method="POST">
+        <input type="text" name="kullanici" placeholder="Kullanıcı Adı" required>
+        <input type="password" name="sifre" placeholder="Şifre" required>
+        <button type="submit">Giriş Yap</button>
+    </form>
 
-{% if hata %}
-<div class="hata">{{ hata }}</div>
-{% endif %}
-
+    <div class="info">
+        ABS Mobilya Stok Takip Sistemi
+    </div>
 </div>
 
 </body>
